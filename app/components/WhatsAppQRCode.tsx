@@ -1,23 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
+const QRCode = dynamic(() => import('qrcode.react'), { ssr: false });
+
 export default function Home() {
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
-  const whatsappNumber = '1234567890'; // Replace with your WhatsApp number
+  const whatsappNumber = '254798353347'; 
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
-
-  useEffect(() => {
-    const generateQRCode = async () => {
-      const response = await fetch(
-        `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(whatsappLink)}`
-      );
-      setQrCodeUrl(response.url);
-    };
-
-    generateQRCode();
-  }, [whatsappLink]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-500 flex flex-col justify-center items-center p-4">
@@ -29,9 +20,7 @@ export default function Home() {
         
         <div className="flex justify-center mb-8">
           <div className="bg-white p-4 rounded-lg shadow-md">
-            {qrCodeUrl && (
-              <Image src={qrCodeUrl} alt="WhatsApp QR Code" width={200} height={200} />
-            )}
+            <QRCode value={whatsappLink} size={200} />
           </div>
         </div>
         
